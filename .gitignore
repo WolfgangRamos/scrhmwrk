@@ -1,0 +1,17 @@
+# temp files
+*~
+
+# latex temp files
+*.aux
+*.out
+*.fls
+*.log
+
+# latex output files
+*.pdf
+
+# latexmk temp files
+*.fdb_latexmk
+
+# AucTex temp files
+**/auto

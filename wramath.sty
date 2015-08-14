@@ -1,0 +1,44 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{wramath}[2015/08/12 A package with math environments and symbols i frequently use]
+
+\RequirePackage{amsmath}                    % ams math environments and symbols
+\RequirePackage{amssymb}                    % additional math symbols
+\RequirePackage{amsthm}                     % additional math environments
+
+
+%% define additional math environments
+\theoremstyle{plain}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{lemma}{Lemma}
+
+\theoremstyle{remark}
+\newtheorem*{vor*}{Voraussetzung}
+\newtheorem*{beh*}{Behauptung}
+\newtheorem*{ia*}{IA}
+\newtheorem*{iv*}{IV}
+\newtheorem*{is*}{IS}
+
+% a theoreme style with an italic title (similar to the proof environment) that can be used to structure proofs
+\newtheoremstyle{ittitle}% Name
+  {}%                 % Space above
+  {}%                 % Space below
+  {}%                 % Body font
+  {}%                 % Indent amount
+  {\itshape}% Theorem head font
+  {:}%                 % Punctuation after theorem head
+  {0.5em}%              % Space after theorem head, ' ', or \newline
+  {\thmnote{#3}}%     % Theorem head spec (can be left empty, meaning `normal')
+
+\theoremstyle{ittitle}
+\newtheorem*{proofsec*}{}
+
+
+%% define additional math symbols
+% Erwartungswert
+\newcommand{\E}{\ensuremath{\mathrm{E}}}
+\newcommand{\sign}{\ensuremath{\mathrm{sign}}}
+
+
+
+
+
