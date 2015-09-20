@@ -1,17 +1,61 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{exsheet}[2015/06/30 v1.0 a document class for exercise sheets based on class scrartcl by Markus Kohm]
 
-\LoadClassWithOptions{scrartcl}% load class with the options of this class
-
+\RequirePackage{kvoptions}
 \RequirePackage{ifthen}                     % for using the \ifthenelse command
-\RequirePackage[ngerman]{babel}             % Spracheinstellung
-\RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}% erweiterte Silbentrennmuster (experimentell)
 \RequirePackage{lmodern}                    % Schriftart Latin Modern
-\RequirePackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}% Seitenränder
+
+\SetupKeyvalOptions{
+  family = scrhmwrk,
+  prefix = scrhmwrk@
+}
+
+\DeclareStringOption{lang}
+\DeclareStringOption[15]{DIV}
+\DeclareStringOption[div]{margins}
+\DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{scrartcl}}
+\ProcessKeyvalOptions{scrhmwrk}
+
+%\PassOptionsToClass{DIV=\scrhmwrk@DIV}{scrartcl}
+
+%\LoadClassWithOptions{scrartcl}% load class with the options of this class
+\LoadClass{scrartcl}% load class
+
+% if loaded with 'margins=small'
+\ifthenelse{\equal{\scrhmwrk@margins}{small}}{%
+  \RequirePackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}% Seitenränder
+  \setlength{\footskip}{1cm}
+}{%
+  % if loaded with 'margins=div'
+  \ifthenelse{\equal{\scrhmwrk@margins}{div}}{%
+    \KOMAoptions{DIV=\scrhmwrk@DIV}
+    \recalctypearea
+  }{%
+    % warn if loaded with unknown margins option
+    \ClassWarning{scrhmwrk}{i don't know margins=\scrhmwrk@margins}% TODO remove
+  }
+}
+
+\ifthenelse{\equal{\scrhmwrk@lang}{\@empty}}{%
+  % do nothing if no language is specified
+}{%
+  % load babel with the given language option
+  \ClassWarning{scrhmwrk}{package babel got loaded}% TODO remove
+  \RequirePackage[\scrhmwrk@lang]{babel}             % Spracheinstellung
+  \RequirePackage[autostyle=true]{csquotes}        % quotings with \enquote{}
+}
+
+% load hyphsubst if loaded with 'lang=ngerman'
+\ifthenelse{\equal{\scrhmwrk@lang}{ngerman}}{%
+  \ClassWarning{scrhmwrk}{package hyphsubst got loaded}% TODO remove
+  \RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}% erweiterte Silbentrennmuster (experimentell)
+}{%
+  % do nothing
+}
+
 \RequirePackage[T1]{fontenc}                % Encodierung der Ausgabe
 \RequirePackage[utf8]{luainputenc}          % Encodierung der Eingabe
 \RequirePackage[headsepline]{scrpage2}      % Kopf- und Fußzeilen
-\RequirePackage[autostyle]{csquotes}        % quotings with \enquote{}
 \RequirePackage{listings}                   % Listings
 \RequirePackage{wralistings}
 \RequirePackage{textcomp}                   % Sonderzeichen, z.B. €
