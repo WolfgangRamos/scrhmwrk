@@ -1,0 +1,942 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2015 by Wolfgang Ramos <wolfgang.ramos@gmail.com>
+% -------------------------------------------------------
+% 
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
+%
+%    http://www.latex-project.org/lppl.txt
+%
+% and version 1.3 or later is part of all distributions of LaTeX 
+% version 2005/12/01 or later.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{scrhmwrk.dtx}
+%</driver>
+%<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<class>\ProvidesClass{scrhmwrk}
+%<*class>
+    [2015/10/18 v1.0 a document class for homework assignments based on the KOMA Script class 'scrartcl']
+%</class>
+%
+%<*driver>
+\RequirePackage{scrlfile}
+\PassOptionsToClass{margins=div, DIV=9, showpagetotal=false, hyperref=false}{scrhmwrk}
+\ReplaceClass{article}{scrhmwrk}
+\BeforePackage{doc}{\let\oldmaketitle\maketitle}
+\documentclass{ltxdoc}
+\usepackage{morefloats}
+\usepackage[style=authoryear, style=authoryear-comp, sorting=nyt, backend=biber, sortcites=true, url=true,	uniquelist=minyear]{biblatex}
+\addbibresource{scrhmwrk.bib}
+
+\usepackage{listings}
+\usepackage{hypdoc}
+\usepackage[hyperindex=false]{hyperref}
+\usepackage{verbatim}
+\usepackage{pbox}
+\usepackage{calc}
+\usepackage{placeins}
+\usepackage{tikz}
+\usetikzlibrary{shapes.symbols}
+
+\lstdefinestyle{verbatim}{
+    basicstyle=\ttfamily,
+    frame=none,
+    gobble=2,
+  	numbers=none,
+    basewidth=0.51em,
+    tabsize=2,
+    showstringspaces=false
+}
+
+\EnableCrossrefs         
+\CodelineIndex
+\RecordChanges
+\begin{document}
+  \frenchspacing
+  \DocInput{scrhmwrk.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+% \makeatletter
+% \lst@RequireAspects{writefile}
+% \newsavebox{\LaTeXdemo@box}
+% \lstnewenvironment{LaTeXdemo}[1][code and example]{^^A
+%  \global\let\lst@intname\@empty
+%  \expandafter\let\expandafter\LaTeXdemo@end
+%    \csname LaTeXdemo@#1@end\endcsname
+%  \@nameuse{LaTeXdemo@#1}^^A
+%}{^^A
+%  \LaTeXdemo@end
+%}
+%\newcommand*\LaTeXdemo@new[3]{^^A
+%  \expandafter\newcommand\expandafter*\expandafter
+%    {\csname LaTeXdemo@#1\endcsname}{#2}^^A
+%  \expandafter\newcommand\expandafter*\expandafter
+%    {\csname LaTeXdemo@#1@end\endcsname}{#3}^^A
+%}
+%\newcommand*\LaTeXdemo@common{^^A
+%  \setkeys{lst}{
+%    basicstyle   = \ttfamily,
+%    frame        = single,
+%    numbers      = none,
+%    basewidth    = 0.51em,
+%    gobble       = 2,
+%  }^^A
+%}
+%\newcommand*\LaTeXdemo@input{^^A
+%  \MakePercentComment
+%  \catcode`\^^M=10\relax
+%  \small
+%  \begingroup
+%    \setkeys{lst}{
+%      SelectCharTable=\lst@ReplaceInput{\^\^I}{\lst@ProcessTabulator}
+%    }^^A
+%    \leavevmode
+%      \input{\jobname.tmp}^^A
+%  \endgroup
+%  \MakePercentIgnore
+%}
+%\LaTeXdemo@new{code and example}{^^A
+%  \setbox\LaTeXdemo@box=\hbox\bgroup
+%    \lst@BeginAlsoWriteFile{\jobname.tmp}^^A
+%    \LaTeXdemo@common
+%}{^^A
+%    \lst@EndWriteFile
+%  \egroup
+%  \begin{center}
+%    \ifdim\wd\LaTeXdemo@box>0.48\linewidth\relax
+%      \hbox to\linewidth{\box\LaTeXdemo@box\hss}^^A
+%        \begin{minipage}{\linewidth}
+%          \LaTeXdemo@input
+%        \end{minipage}
+%    \else
+%      \begin{minipage}{0.48\linewidth}
+%        \LaTeXdemo@input
+%      \end{minipage}
+%      \hfill
+%      \begin{minipage}{0.48\linewidth}
+%        \hbox to\linewidth{\box\LaTeXdemo@box\hss}^^A
+%      \end{minipage}
+%    \fi
+%  \end{center}
+%}
+%\LaTeXdemo@new{code only}{^^A
+%  \LaTeXdemo@common
+%}{^^A
+%}
+%
+%
+% \changes{v1.0}{2015/10/07}{Initial version}
+%
+% \GetFileInfo{scrhmwrk.dtx}
+%
+% \DoNotIndex{\#,\$,\%,\&,\@,\\,\{,\},\^,\_,\~,\ }
+% \DoNotIndex{\newcommand,\newenvironment,\renewcommand,\let,\setlength,\setcounter,\newcounter,\RequirePackage,\begin,\end,\expandafter}
+% \DoNotIndex{\bfseries,\texttt,\itshape,\small,\tiny,\raisebox,\arabic,\centering,\ensuremath,\footnotesize,\hfill,\textbf,\sffamily}
+% \DoNotIndex{\section,\section*,\subsection,\subsection*,\newline}
+% \pagestyle{plain}
+% \title{\textsf{scrhmwrk}\thanks{this documentation applies to \textsf{scrhmwrk}~\fileversion, last revised \filedate.}}
+% \subtitle{A class (not only) for computer science and math homework assignments}
+% \author{Wolfgang Ramos \\ \texttt{wolfgang.ramos@gmail.com}}
+% \date{Printed \today}
+%
+% \maketitle
+%
+% \begin{abstract}
+% This class provides functionality for typsetting school/university homework assignments while giving access to the features of the \textsf{scrartcl} class.
+% \end{abstract}
+%
+% \section{Introduction}
+% Hand-in homework assignments have special requirements.
+% On the one hand they usually need to state certain \emph{affiliation informations}, like student's name(s), course name, tutor's name, etc.
+% On the other hand they generally don't need to fulfill the layout requirements of high quality typesetting.
+% Instead students are often interested in an economical page layout to save on printing costs.
+% Furthermore Students in computer science and math need easy access to additional features concerning code listings, mathematical proofs and equations.
+% \textsf{scrhmwrk} offers (among others):
+% \begin{itemize}
+% \item macros to create a page header showing the homework's affiliation informations (see section \ref{sec:pageheader}),
+% \item class options to choose small page margins (see section \ref{sec:classoptions}),
+% \item additional theoreme environments to structure mathematical proofs, especially mathematical inductions (see section \ref{sec:extendmath}),
+% \item additional math operators (see section \ref{sec:extendmath}) and
+% \item a style for code listings (see section \ref{sec:listingsstyle}).
+% \end{itemize}
+%
+% \section{Usage}
+% \label{sec:usage}
+%
+% \subsection{Class options}
+% \label{sec:classoptions}
+%
+% \textsf{scrhmwrk} recognizes all class options\index{class options|usage} of \textsf{scrartcl} \parencite{komascript}, as well as the additional options stated in \autoref{tab:classoptions}.
+% \index{section headings|usage}
+%
+% \begin{table}[htbp]
+% \small
+% \centering
+% \begin{tabularx}{\textwidth}{lp{2.9cm}X}
+%   \toprule
+%   Option & Values & Description \\
+%   \midrule
+%   \texttt{lang}          & \texttt{lang=}\meta{arg}                   & see \ref{sec:language} \\
+%   \texttt{margins}       & \texttt{margins=div}                       & Use \textsf{scrartcl}'s class option \texttt{DIV} to set page margins. To get the default \textsf{scrartcl} layout use it in combination with \texttt{DIV=9}. \\
+%                          & \texttt{margins=small}                     & Use this option if you want even smaller page margins (especially for the page bottom). \\
+%   \texttt{headings}      & \texttt{headings=}\newline\texttt{normal}  & see \textcite{komascript} for a list of possible values \\
+%   \texttt{listings}      & \texttt{listings=}\newline\texttt{true}/\texttt{false} & Load \textsf{listings}, provide additional listings style \texttt{scrhmwrk} and language \texttt{Pseudocode}. \\
+%   \texttt{extendmath}    & \texttt{extendmath=}\newline\texttt{true}/\texttt{false}    & Load \textsf{amsmath}, \texttt{amssymb} and \textsf{amsthm} and provide additional math environments and operators. \\
+%   \texttt{extendtables}  & \texttt{extendtables=}\newline\texttt{true}/\texttt{false}  & Load \textsf{tabularx} and \textsf{booktabs}. \\
+%   \texttt{showpagetotal} & \texttt{showpagetotal=}\newline\texttt{true}/\texttt{false} & Load \textsf{lastpage} and show the page total in the footer together with the current page number.\\
+%   \texttt{hyperref}      & \texttt{hyperref=}\newline\texttt{true}/\texttt{false}      & Load \textsf{hyperref}.\\
+%   \bottomrule
+% \end{tabularx}
+% \caption{Class options of \textsf{scrhmwrk}}
+% \label{tab:classoptions}
+% \end{table}
+%
+% \noindent{}By default \textsf{scrhmwrk} is loaded with:
+% \begin{lstlisting}[style=verbatim]
+% \documentclass[margins=div, DIV=15, headings=normal, 
+%                listings=true, extendmath=true,
+%                extendtables=true, showpagetotal=true, 
+%                hyperref=true]{scrhmwrk}
+% \end{lstlisting}
+% If you want to pass specific options to one of the packages loaded by default, just disable default loading and load the package in your preamble.
+%
+% \subsubsection{Language}
+% \label{sec:language}
+% The class option \texttt{lang=}\meta{arg}\index{language setup|usage} loads \textsf{babel} with language \meta{arg} \parencite[see][for a list of accepted values]{babel} and \textsf{csquotes} \parencite{csquotes} with option \texttt{autostyle=true}.
+% If \meta{arg} is one of
+% \begin{lstlisting}[style=verbatim]
+% english, UKenglish, USenglish, american, UKenglish, british, 
+% canadian, australian, newzealand, german, ngerman, austrian, 
+% germanb, naustrian
+% \end{lstlisting}
+% it is also used to configure the page header and the additional math environments. See \ref{sec:pageheader} and section \ref{sec:extendmath} on how to configure \textsf{scrhmwrk}'s features for other languages.
+%
+% \subsection{Page header and footer}
+% \label{sec:pageheader}
+% 
+% \DescribeMacro{\course}
+% \DescribeMacro{\participant}
+% \DescribeMacro{\tutor}
+% \DescribeMacro{\corrector}
+% \DescribeMacro{\group}
+% \DescribeMacro{\series}
+% This class provides macros to fill each field of the page header\index{page header|usage} in \autoref{fig:pageheader}, making your homework ready to be handed to your corrector. 
+% \autoref{tab:header:macros} shows the macros corresponding to the fields.
+% Notice that each field in the header has a preeceding \emph{field descriptor} (desc). These field descriptors can be set using the optional argument \meta{desc} of the corresponding field macro.
+% To omit the descriptor of a field supply an empty optional argument, i.\,e. |[]| to the macro.
+% \autoref{tab:header:macros} shows the default field descriptors for different language setups.
+% If \textsf{scrhmerk} is loaded with a language that is curretly not supported, english descriptors are used by default. 
+%
+% \begin{figure}[htbp]
+% \centering
+% \begin{tikzpicture}[x=1cm, y=1cm]
+%   \newlength{\scrhmwrkheaderwidth}\setlength{\scrhmwrkheaderwidth}{\textwidth - 0.6cm}
+%   \node (page) at (0,0) [anchor= north west, tape, draw, tape bend top=none, text width=\textwidth, text height=2cm] {};
+%   \node (header) at (0.3,-0.3) [anchor=north west, text width=\scrhmwrkheaderwidth, align=left, font=\scriptsize] {\textlangle{}\textbf{desc: }\textrangle{}\textlangle{}course\textrangle{}\hfill{}\textlangle{}\textbf{desc: }\textrangle{}\textlangle{}group\textrangle{}\hfill{}\textlangle{}\textbf{desc: }\textrangle{}\textlangle{}tutor\textrangle{}\hfill{}\textlangle{}\textbf{desc: }\textrangle{}\textlangle{}corrector\textrangle{}\\
+% \textlangle{}\textbf{desc: }\textrangle{}\textlangle{}participant\textrangle{} \hfill{}\textlangle{}\textbf{desc: }\textrangle{}\textlangle{}series\textrangle{}};
+%   \path[draw] (header.south east) -- (header.south west);
+% \end{tikzpicture}
+% \caption{General structure of the page header supplyed by \textsf{scrhmwrk}}
+% \label{fig:pageheader}
+% \end{figure}
+%
+% \begin{table}[htbp]
+%   \small
+%   \centering
+%   \begin{tabular}{llll}
+%     \toprule
+%                  &                                      & \multicolumn{2}{c}{field descriptor} \\
+%     header field & macro                                & english (default) & german \\
+%     \midrule
+%     course       & |\course|\oarg{desc}\marg{name}      & Course & Kurs \\
+%     participant  & |\participant|\oarg{desc}\marg{name} & Participant & Teilnehmer \\
+%     tutor        & |\tutor|\oarg{desc}\marg{name}       & Tutor & Übungsleiter \\
+%     corrector    & |\corrector|\oarg{desc}\marg{name}   & Corrector & Korrektor \\
+%     group        & |\group|\oarg{desc}\marg{name}       & Group & Gruppe \\
+%     series       & |\series|\oarg{desc}\marg{number}    & Series & Serie \\
+%     \bottomrule
+%   \end{tabular}
+%   \caption{macros for page header fields}
+%   \label{tab:header:macros}
+% \end{table}
+%
+% The header is created using \textsf{scrpage2} \parencite{komascript} and is by default typeset in |\footnotesize| and |\sffamily|.
+% To change the font of the header the KOMA Script macro |\setkomafont| for changing document fonts can be used \parencite[see][]{komascript}.
+% So if you want e.\,g. a roman font with a normal size for your header and footer put 
+% \begin{lstlisting}[style=verbatim]
+% \setkomafont{pageheadfoot}{\rmfamily\normalsize} 
+% \end{lstlisting}
+% in your document preamble.
+% 
+% To customize the page footer\index{page footer|usage} use \textsf{scrpage2}'s \parencite{komascript} |\cfoot| command.
+% So if you want a french page footer put 
+% \begin{lstlisting}[style=verbatim]
+% \cfoot{page \pagemark{} de \ref{LastPage}}
+% \end{lstlisting}
+% in your preamble.
+%
+% \subsection{Task headings}
+% \DescribeMacro{\task}
+% \DescribeMacro{\subtask}
+% To assign headings to tasks\index{task headings|usage} in your homework you could of course use the standard sectioning commands of \textsf{srcartcl}, but for convenience \textsf{scrhmwrk} offers the macros |\task|\marg{title} and |\subtask|\marg{title}. |\task| is basically just a centered |\section*| and |\subtask| a centered |\subsection*|, so they won't appear in the table of content (if you want that, just use standard sectioning commands).
+%
+% \subsection[Listings style scrhmwrk]{Listings style \texttt{scrhmwrk}}
+% \label{sec:listingsstyle}
+%
+% If loaded with |listings=true| (the default) \textsf{scrhmwrk} loades the \textsf{listings}-package \parencite{listings} and provides it's own listings style called \texttt{scrhmwrk}\index{scrhmwrklistings=\texttt{scrhmwrk} (listings style)|usage}. 
+% To apply that style to a single code listing use |style=scrhmwrk|. 
+% To apply that style to all code listings in a document put \texttt{style=scrhmwrk} in your |\lstset| setup.
+% \autoref{lst:style:scrhmwrk} shows an example listing using \texttt{style=scrhmwrk}; \autoref{fig:style:scrhmwrk:source} shows its source code.
+% 
+% \begin{lstlisting}[style=scrhmwrk, float, gobble=2, language=C, caption=Hello World in C, label=lst:style:scrhmwrk]
+% #include<stdio.h>
+%
+% int main() {
+%   printf("Hello World\n");
+%   return 0;
+% }
+% \end{lstlisting}
+%
+% \begin{figure}
+% \small
+% \centering   
+% \begin{LaTeXdemo}[code only]
+% \begin{lstlisting}[style=scrhmwrk, language=C]
+%   #include<stdio.h>
+%
+%   int main() {
+%     printf("Hello World\n");
+%     return 0;
+%   }
+% \end{lstlisting}
+% \end{LaTeXdemo}
+%   \caption{Source code for \enquote{Hello World in C} example}
+%   \label{fig:style:scrhmwrk:source}
+% \end{figure}
+% 
+% \subsection[Pseudocode]{\texttt{Pseudocode}}
+% \label{sec:pseudocode}
+%
+% \texttt{Pseudocode}\index{Pseudocode=\texttt{Pseudocode} (programming language)|usage} defines a simple pseudocode programming language. It recognizes the following keywords (prints them bold): \texttt{for if, then, while, for, do, else, fi, od, return, to, integer, bool, node, null}.
+%
+% \subsection{Additional math environments and operators}
+% \label{sec:extendmath}
+%
+% \DescribeEnv{lemma}
+% \DescribeEnv{lemma*}
+% \DescribeEnv{precondition*}
+% \DescribeEnv{assertion*}
+% \DescribeEnv{proofsec*}
+% \DescribeEnv{indbase*}
+% \DescribeEnv{indhyp*}
+% \DescribeEnv{indstep*}
+% \DescribeMacro{\E}
+% \DescribeMacro{\sign}
+% If loaded with |extendmath=true| \textsf{scrhmwrk} loades \texttt{amsmath} \parencite{amsmath}, \texttt{amsfonts} \parencite{amsfonts} and \texttt{amsthm} \parencite{amsthm} and introduces additional math operators\index{math operators|usage} and math environments\index{math environments|usage} to structure proofs. These environments and operators can only be used in math mode, e.\,g. inside |$ ... $|. The new environments are shown in \autoref{tab:math:environments} and \autoref{fig:math:environments}. 
+% The new operators in \autoref{tab:math:operators}. 
+% Notice, that most of the environments are only supplyed in a \emph{starred} version, meaning they \emph{won't} be numbered. 
+%
+% \begin{table}[htbp]
+% \small
+% \centering
+% \begin{tabular}{lll}
+%   \toprule
+%   Environment                 & Purpose                      & title setting macro \\
+%   \midrule
+%   |lemma|,                    & lemmatas (numbered)\index{math environments>lemma|usage}          & |\lemmahead|\marg{title} \\
+%   |lemma*|,                   & lemmatas (not numbered)      & |\lemmahead|\marg{title} \\
+%   |precondition*|             & preconditions\index{math environments>precondition|usage}                & |\preconditionhead|\marg{title} \\
+%   |assertion*|                & assertions\index{math environments>assertion|usage}                   & |\assertionhead|\marg{title} \\
+%   |proofsec*|                 & semantic unit within a proof\index{math environments>proof section|usage} & environment has no heading \\
+%   \addlinespace
+%   \multicolumn{3}{c}{environments for induction proofs} \\
+%   \addlinespace
+%   |indbase*|                  & base clause\index{math environments>induction>base|usage}                  & |\indbasehead|\marg{title} \\
+%   |indhyp*|                   & hypothesis\index{math environments>induction>hypothesis|usage}                   & |\indhyphead|\marg{title} \\
+%   |indstep*|                  & induction step\index{math environments>induction>step|usage}               & |\indstephead|\marg{title} \\
+%   \bottomrule
+% \end{tabular}
+% \caption{New math environments provided by \textsf{scrhmwrk}}
+% \label{tab:math:environments}
+% \end{table}
+% 
+% \begin{figure}[htb]
+% \centering
+% \begin{tikzpicture}
+%   \node (page) at (0,0) [anchor= north west, tape, draw, text width=\textwidth, font=\small] {
+%     \begin{lemma}This is a numbered lemma.\end{lemma}
+%     \begin{lemma*}This is a unnumbered lemma.\end{lemma*}
+%     \begin{precondition*}This is a precondition.\end{precondition*}
+%     \begin{assertion*}This is an assertion.\end{assertion*}
+%     \begin{proof}
+%       This is a mathematical induction.
+%       \begin{indbase*}This is the base\end{indbase*}
+%       \begin{indhyp*}This is the induction hypothesis\end{indhyp*}
+%       \begin{indstep*}This is the induction step\end{indstep*}
+%     \end{proof}
+%     \begin{proof}
+%       This is a proof with a section
+%       \begin{proofsec*}[My Proof Section] This is a proof section.\end{proofsec*}
+%     \end{proof}
+%     };
+% \end{tikzpicture}
+% \caption{Demonstration of the new math environments}
+% \label{fig:math:environments}
+% \end{figure}
+%
+% \begin{table}[htb]
+% \small
+% \centering
+% \begin{tabular}{lll}
+%   \toprule
+%   Operator & Description                                               & Macro   \\
+%   \midrule
+%   $\E$     & expected value\index{math operators>expected value|usage} of a random variable & |\E|    \\
+%   $\sign$  & sign function\index{math operators>sign function|usage}                        & |\sign| \\
+%   \bottomrule
+% \end{tabular}
+% \caption{New math operators introduced by \textsf{scrhmwrk}}
+% \label{tab:math:operators}
+% \end{table}
+% 
+% \DescribeMacro{\lemmahead}
+% \DescribeMacro{\assertionhead}
+% \DescribeMacro{\preconditionhead}
+% \DescribeMacro{\indbasehead}
+% \DescribeMacro{\indhyphead}
+% \DescribeMacro{\indstephead} 
+% To customize the titles given to the additional math environments use the \texttt{\textbackslash}\meta{environment}\texttt{head} macros (see \autoref{tab:math:environments}). So if you want e.\,g. the title of the \texttt{lemma} environment to be \enquote{Lemme}, then put 
+% \begin{lstlisting}[style=verbatim]
+% \lemmahead{Lemme}
+% \end{lstlisting}
+% in your preamble.
+%
+% \FloatBarrier
+% \StopEventually{\PrintChanges\printbibliography[heading=bibintoc]{}\PrintIndex}
+%
+% \section{Implementation}
+% \label{sec:implementation}
+% 
+% Load packages
+%
+%    \begin{macrocode}
+\RequirePackage{kvoptions}
+\RequirePackage{ifthen}
+\RequirePackage{lmodern}
+\RequirePackage{textcomp}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{luainputenc}
+%    \end{macrocode}
+%
+% Declare Key-Value family \texttt{scrhmwrk}.
+% \DoNotIndex{\SetupKeyvalOptions,\DeclareStringOption,\DeclareBoolOption,\DeclareDefaultOption,\ProcessKeyvalOptions,\PassOptionsToClass,\CurrentOption,\LoadClass}
+%
+%    \begin{macrocode}
+\SetupKeyvalOptions{
+  family = scrhmwrk,
+  prefix = scrhmwrk@
+}
+%    \end{macrocode}
+%
+% Declare class options and pass unknown options to \textsf{scrartcl}.
+% \DoNotIndex{\scrhmwrk@lang,\scrhmwrk@DIV,\scrhmwrk@margins,\scrhmwrk@headings,\scrhmwrk@listings,\scrhmwrk@extendmath,\scrhmwrk@showpagetotal}
+%
+%    \begin{macrocode}
+\DeclareStringOption{lang}
+\DeclareStringOption[15]{DIV}
+\DeclareStringOption[div]{margins}
+\DeclareStringOption[normal]{headings}
+\DeclareBoolOption[true]{listings}
+\DeclareBoolOption[true]{extendmath}
+\DeclareBoolOption[true]{extendtables}
+\DeclareBoolOption[true]{hyperref}
+\DeclareBoolOption[true]{showpagetotal}
+\DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{scrartcl}}
+\ProcessKeyvalOptions{scrhmwrk}
+\PassOptionsToClass{headings=\scrhmwrk@headings}{scrartcl}
+\LoadClass{scrartcl}
+%    \end{macrocode}
+%
+% Define internal macros for field descriptors. Use english as default language
+% \DoNotIndex{\@seriestitle,\@participanttitle,\@tutortitle,\@grouptitle,\@coursetitle,\@correctortitle}
+% \DoNotIndex{\@series,\@participant,\@tutor,\@group,\@course,\@corrector}
+%
+%    \begin{macrocode}
+\newcommand{\@seriestitle}{Series}
+\newcommand{\@participanttitle}{Participant}
+\newcommand{\@tutortitle}{Tutor}
+\newcommand{\@grouptitle}{Group}
+\newcommand{\@coursetitle}{Course}
+\newcommand{\@correctortitle}{Corrector}
+%    \end{macrocode}
+%
+% Define internal macros for math environment titles. Use english as default language.
+% \DoNotIndex{\@indbasehead,\@indhyphead,\@indstephead,\@lemmahead,\@preconditionhead,\@assertionhead}
+%
+%    \begin{macrocode}
+\newcommand{\@indbasehead}{IB}
+\newcommand{\@indhyphead}{IH}
+\newcommand{\@indstephead}{IS}
+\newcommand{\@lemmahead}{Lemma}
+\newcommand{\@preconditionhead}{Precondition}
+\newcommand{\@assertionhead}{Assertion}
+%    \end{macrocode}
+%
+% Define user interface to set math environment titles.
+%
+% \begin{macro}{\indbasehead}
+%    \begin{macrocode}
+\newcommand{\indbasehead}[1]{\renewcommand{\@indbasehead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\indhyphead}
+%    \begin{macrocode}
+\newcommand{\indhyphead}[1]{\renewcommand{\@indhyphead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\indstephead}
+%    \begin{macrocode}
+\newcommand{\indstephead}[1]{\renewcommand{\@indstephead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\lemmahead}
+%    \begin{macrocode}
+\newcommand{\lemmahead}[1]{\renewcommand{\@lemmahead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\preconditionhead}
+%    \begin{macrocode}
+\newcommand{\preconditionhead}[1]{\renewcommand{\@preconditionhead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\assertionhead}
+%    \begin{macrocode}
+\newcommand{\assertionhead}[1]{\renewcommand{\@assertionhead}{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% Define internal macros for page footer. Use english as default language.
+% \DoNotIndex{\@scrhmwrkpage,\@scrhmwrkof}
+% 
+%    \begin{macrocode}
+\newcommand{\@scrhmwrkpage}{Page}
+\newcommand{\@scrhmwrkof}{of}
+%    \end{macrocode}
+%
+% Process class option \texttt{lang}. If \texttt{lang} is not specified do nothing, otherwise pass the value to babel.
+% \DoNotIndex{\ifthenelse,\or,\equal,\@empty,\ClassInfo,\ClassWarning,\boolean}
+%
+%    \begin{macrocode}
+\ifthenelse{\equal{\scrhmwrk@lang}{\@empty}}
+{
+  \ClassWarning{scrhmwrk}{Option 'lang' not specified. English used as default language to configure scrhmwrk.}
+}{
+  \ClassInfo{scrhmwrk}{package babel loaded with language '\scrhmwrk@lang'}
+  \RequirePackage[\scrhmwrk@lang]{babel}
+  \RequirePackage[autostyle=true]{csquotes}
+}
+
+% if 'lang' is a german language
+\ifthenelse{\equal{\scrhmwrk@lang}{ngerman}
+            \or \equal{\scrhmwrk@lang}{german}
+            \or \equal{\scrhmwrk@lang}{germanb}
+            \or \equal{\scrhmwrk@lang}{austrian}
+            \or \equal{\scrhmwrk@lang}{naustrian}
+}{
+  \ClassInfo{scrhmwrk}{Configuring srchmwrk with language option '\scrhmwrk@lang'}
+  \renewcommand{\@seriestitle}{Serie}
+  \renewcommand{\@participanttitle}{Teilnehmer}
+  \renewcommand{\@tutortitle}{Übungsleiter}
+  \renewcommand{\@grouptitle}{Gruppe}
+  \renewcommand{\@coursetitle}{Übung}
+  \renewcommand{\@correctortitle}{Korrektor}
+
+  \renewcommand{\@indbasehead}{IA}
+  \renewcommand{\@indhyphead}{IV}
+  \renewcommand{\@indstephead}{IS}
+  \renewcommand{\@lemmahead}{Lemma}
+  \renewcommand{\@preconditionhead}{Voraussetzung}
+  \renewcommand{\@assertionhead}{Behauptung}
+
+  \renewcommand{\@scrhmwrkpage}{Seite}
+  \renewcommand{\@scrhmwrkof}{von}
+}{
+  % do nothing
+}
+
+% if lang is an english language
+\ifthenelse{\equal{\scrhmwrk@lang}{english} 
+            \or \equal{\scrhmwrk@lang}{USenglish}
+            \or \equal{\scrhmwrk@lang}{american}
+            \or \equal{\scrhmwrk@lang}{UKenglish}
+            \or \equal{\scrhmwrk@lang}{british}
+            \or \equal{\scrhmwrk@lang}{canadian}
+            \or \equal{\scrhmwrk@lang}{australian}
+            \or \equal{\scrhmwrk@lang}{newzealand}
+}{
+  \ClassInfo{scrhmwrk}{Configuring srchmwrk with language option '\scrhmwrk@lang'}
+}{
+  % do nothing
+}
+
+% if lang is a language that is not (yet) supported by scrhmwrk warn
+\ifthenelse{\equal{\scrhmwrk@lang}{english} 
+            \or \equal{\scrhmwrk@lang}{USenglish}
+            \or \equal{\scrhmwrk@lang}{american}
+            \or \equal{\scrhmwrk@lang}{UKenglish}
+            \or \equal{\scrhmwrk@lang}{british}
+            \or \equal{\scrhmwrk@lang}{canadian}
+            \or \equal{\scrhmwrk@lang}{australian}
+            \or \equal{\scrhmwrk@lang}{newzealand}
+            \or \equal{\scrhmwrk@lang}{german}
+            \or \equal{\scrhmwrk@lang}{ngerman}
+            \or \equal{\scrhmwrk@lang}{germanb}
+            \or \equal{\scrhmwrk@lang}{austrian}
+            \or \equal{\scrhmwrk@lang}{naustrian}
+}{
+  \ClassInfo{scrhmwrk}{srchmwrk does not know language '\scrhmwrk@lang'. Falling back to english. Use scrhmwrk's macros to configure language specific features to your needs.}
+}{
+  % else do nothing
+}
+%    \end{macrocode}
+%
+% Process class option \texttt{listings}. If |listings=true| (default) load \textsf{listings} package, define listings style \texttt{scrhmwrk} and language \texttt{Pseudocode}.
+% \DoNotIndex{\lstdefinestyle,\lstset,\lstdefinelanguage,\",\',\`,\^,\\,\oe,\OE,\ae,\AE,\ss,\H,\c,\o,\r,\EUR,\pounds,\hookrightarrow,\space,\ttfamily,\rmfamily}
+%
+%    \begin{macrocode}
+\ifthenelse{\boolean{scrhmwrk@listings}}{
+  \RequirePackage{listings}
+
+  \lstdefinestyle{scrhmwrk}{
+    basicstyle=\small\ttfamily,
+    commentstyle=\small\itshape\rmfamily,
+    basewidth=0.45em,
+    frame=single,
+  	breaklines=true,
+  	postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow\space}},
+  	numbers=left,
+  	numbersep=5pt,
+    numberstyle=\tiny,
+    xleftmargin=14pt,
+    tabsize=2,
+    showstringspaces=false,
+    literate= % define special non-ascii characters
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+    {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+    {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+    {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+    {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+    {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+    {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+    {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+    {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+    {€}{{\EUR}}1 {£}{{\pounds}}1}
+  
+  \lstdefinelanguage{Pseudocode}{
+    keywords={if, then, while, for, do, else, fi, od, return, to, integer, bool, node, null},
+    keywordstyle=\bfseries,
+    sensitive=false,
+    comment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    commentstyle=\itshape
+  }
+}{
+  % do nothing if loaded with 'listings=false'
+}
+%    \end{macrocode}
+%
+% Process class option \texttt{extendmath}. If loaded with |extendmath=true| (default) load \textsf{amsmath}, \textsf{amssymb}, \textsf{amsthm} and define new math environments and operators.
+% \DoNotIndex{\theoremstyle,\newtheorem,\newtheorem*,\newtheoremstyle,\thmnote,\DeclareMathOperator,\equation,\gather,\endequation,\endgather}
+%
+%    \begin{macrocode}
+\ifthenelse{\boolean{scrhmwrk@extendmath}}{
+  \RequirePackage{amsmath}
+  \RequirePackage{amssymb}
+  \RequirePackage{amsthm}
+
+  \DeclareMathOperator{\E}{E}
+  \DeclareMathOperator{\sign}{sign}
+
+  % configure amsmath to be used with hyperref
+  \let\equation\gather
+  \let\endequation\endgather
+%    \end{macrocode}
+%
+% \begin{environment}{lemma}
+%    \begin{macrocode}
+  \theoremstyle{plain}
+  \newtheorem{lemma}{\@lemmahead}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{lemma*}
+%    \begin{macrocode}
+  \theoremstyle{plain}
+  \newtheorem*{lemma*}{\@lemmahead}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{precondition*}
+%    \begin{macrocode}
+  \theoremstyle{remark}
+  \newtheorem*{precondition*}{\@preconditionhead}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{assertion*}
+%    \begin{macrocode}
+  \theoremstyle{remark}
+  \newtheorem*{assertion*}{\@assertionhead}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{indbase*}
+%    \begin{macrocode}
+  \theoremstyle{remark}
+  \newtheorem*{indbase*}{\@indbasehead}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{indhyp*}
+%    \begin{macrocode}
+  \theoremstyle{remark}
+  \newtheorem*{indhyp*}{\@indhyphead}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{indstep*}
+%    \begin{macrocode}
+  \theoremstyle{remark}
+  \newtheorem*{indstep*}{\@indstephead}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{proofsec*}
+% Define theoreme style \texttt{ittitle} with an italic title (similar to the proof environment)
+%    \begin{macrocode}  
+  \newtheoremstyle{ittitle}% name
+    {}% space above
+    {}% space below
+    {}% body font
+    {}% indent amount
+    {\itshape}% head font
+    {:}% punctuation after theorem head
+    {0.5em}% space after theorem head, ' ', or \newline
+    {\thmnote{#3}}% theorem head spec (can be left empty, meaning `normal')
+  
+  \theoremstyle{ittitle}% italic heading, regular body text
+  \newtheorem*{proofsec*}{}
+%    \end{macrocode}
+% \end{environment}
+%
+%    \begin{macrocode}  
+}{
+  % do nothing if loaded with 'extendmath=false'
+}
+%    \end{macrocode}
+%
+% Process class option \texttt{extendtables}. If |extendtables=true| (default) load \textsf{tabularx} and \textsf{booktabs}.
+%
+%    \begin{macrocode}  
+\ifthenelse{\boolean{scrhmwrk@extendtables}}{
+  \RequirePackage{tabularx}
+  \RequirePackage{booktabs}
+}{
+  % do nothing if loaded with 'extendtables=false'
+}
+%    \end{macrocode}
+%
+% Process class option \texttt{margins}. If |margins=small| load \textsf{geometry} and set page margins to 2\,cm on all four sides. If |margins=div| uns \textsf{scrartcl}'s \texttt{DIV} class option to set the page margins. If \texttt{DIV} is not explicitly specified \textsf{scrhmwrk} uses |DIV=15| as a default to obtain small page margins. If loaded with an unknown option give a warning.
+% \DoNotIndex{\footskip,\KOMAoptions,\recalctypearea}
+%
+%    \begin{macrocode}
+\ifthenelse{\equal{\scrhmwrk@margins}{small}}{
+  \RequirePackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+  \setlength{\footskip}{1cm}
+}{
+  \ifthenelse{\equal{\scrhmwrk@margins}{div}}{%
+    \KOMAoptions{DIV=\scrhmwrk@DIV}
+    \recalctypearea
+  }{ % warn if loaded with unknown option
+    \ClassWarning{scrhmwrk}{I don't know margins=\scrhmwrk@margins}
+  }
+}
+%    \end{macrocode}
+%
+% \begin{macro}{\series} 
+% Fill the series field in the header.
+%    \begin{macrocode}
+\newcounter{theseries}
+\newcommand{\@series}{}
+\newcommand{\series}[2][\expandafter{\@seriestitle}]{
+  \setcounter{theseries}{#2}
+  \ifthenelse{\equal{#1}{\@empty}}
+  {
+    \renewcommand{\@series}{\arabic{theseries}}
+  }{
+    \renewcommand{\@series}{\textbf{#1:} \arabic{theseries}}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\participant}
+% Fill the participant field in the header.
+%    \begin{macrocode}
+\newcommand{\@participant}{}
+\newcommand{\participant}[2][\expandafter{\@participanttitle}]{
+  \ifthenelse{\equal{#1}{\@empty}}
+  {
+    \renewcommand{\@participant}{#2}
+  }{
+    \renewcommand{\@participant}{\textbf{#1:} #2}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\tutor}
+% Fill the tutor field in the header.
+%    \begin{macrocode}
+\newcommand{\@tutor}{}
+\newcommand{\tutor}[2][\expandafter{\@tutortitle}]{
+  \ifthenelse{\equal{#1}{\@empty}}
+  {
+    \renewcommand{\@tutor}{#2}
+  }{
+    \renewcommand{\@tutor}{\textbf{#1:} #2}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\course}
+% Fill the course field in the header.
+%    \begin{macrocode}
+\newcommand{\@course}{}
+\newcommand{\course}[2][\expandafter{\@coursetitle}]{
+  \ifthenelse{\equal{#1}{\@empty}}
+  {
+    \renewcommand{\@course}{#2}
+  }{
+    \renewcommand{\@course}{\textbf{#1:} #2}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\group}
+% Fill the group field in the header.
+%    \begin{macrocode}
+\newcommand{\@group}{}
+\newcommand{\group}[2][\expandafter{\@grouptitle}]{
+  \ifthenelse{\equal{#1}{\@empty}}
+  {
+    \renewcommand{\@group}{#2}
+  }{
+    \renewcommand{\@group}{\textbf{#1:} #2}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\corrector}
+% Fill the corrector field in the header.
+%    \begin{macrocode}
+\newcommand{\@corrector}{}
+\newcommand{\corrector}[2][\expandafter{\@correctortitle}]{
+  \ifthenelse{\equal{#1}{\@empty}}
+  {
+    \renewcommand{\@corrector}{#2}
+  }{
+    \renewcommand{\@corrector}{\textbf{#1:} #2}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% Configure header, footer and process option \texttt{showpagetotal}. If |showpagetotal=true|\marginline{\small\texttt{showpagetotal}} (default) load \textsf{lastpage} and show current page and page total in the footer. Otherwise show only page number in the footer.
+% \DoNotIndex{\clearscrheadings,\ihead,\cfoot,\pagemark,\pageref,\setkomafont,\pagestyle}
+%
+%    \begin{macrocode}  
+\RequirePackage[headsepline]{scrpage2}
+\clearscrheadings
+
+\ihead{\@course \hfill \@group \hfill \@tutor \hfill \@corrector \\
+       \@participant \hfill \@series}
+
+\ifthenelse{\boolean{scrhmwrk@showpagetotal}}{
+  \RequirePackage{lastpage}
+  \cfoot{\@scrhmwrkpage \pagemark{} \@scrhmwrkof \pageref{LastPage}}
+}{
+  \cfoot{\pagemark}
+}
+
+\setkomafont{pageheadfoot}{\sffamily\footnotesize}
+\pagestyle{scrheadings}
+%    \end{macrocode}
+%
+% \begin{macro}{\task} Create task headings.
+%
+%    \begin{macrocode}
+\newcommand{\task}[1]{\section*{\centering #1}}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\subtask} Create subtask headings.
+%    \begin{macrocode}
+\newcommand{\subtask}[1]{\subsection*{\centering #1}}
+%    \end{macrocode}
+% \end{macro}
+% 
+% Process class option \texttt{hyperref}. If |hyperref=true| (default) load package \textsf{hyperref}.
+% 
+%    \begin{macrocode}
+\ifthenelse{\boolean{scrhmwrk@hyperref}}{
+  \RequirePackage{hyperref}
+}{
+  % do nothing if 'hyperref=false'
+}
+%    \end{macrocode}
+%
+% \Finale
+\endinput
+
+% Local Variables:
+% mode: doctex
+% TeX-master: t
+% End:
