@@ -473,6 +473,7 @@
 \DeclareStringOption[15]{DIV}
 \DeclareStringOption[div]{margins}
 \DeclareStringOption[normal]{headings}
+\DeclareStringOption[half-]{parskip}
 \DeclareBoolOption[true]{listings}
 \DeclareBoolOption[true]{extendmath}
 \DeclareBoolOption[true]{extendtables}
@@ -481,7 +482,9 @@
 \DeclareDefaultOption{\PassOptionsToClass{\CurrentOption}{scrartcl}}
 \ProcessKeyvalOptions{scrhmwrk}
 \PassOptionsToClass{headings=\scrhmwrk@headings}{scrartcl}
+\PassOptionsToClass{parskip=\scrhmwrk@parskip}{scrartcl}
 \LoadClass{scrartcl}
+\RequirePackage{enumitem}
 %    \end{macrocode}
 %
 % Define internal macros for field descriptors. Use english as default language
@@ -505,6 +508,7 @@
 \newcommand{\@indhyphead}{IH}
 \newcommand{\@indstephead}{IS}
 \newcommand{\@lemmahead}{Lemma}
+\newcommand{\@definitionhead}{Definition}
 \newcommand{\@preconditionhead}{Precondition}
 \newcommand{\@assertionhead}{Assertion}
 %    \end{macrocode}
@@ -587,6 +591,7 @@
   \renewcommand{\@indhyphead}{IV}
   \renewcommand{\@indstephead}{IS}
   \renewcommand{\@lemmahead}{Lemma}
+  \renewcommand{\@definitionhead}{Definition}
   \renewcommand{\@preconditionhead}{Voraussetzung}
   \renewcommand{\@assertionhead}{Behauptung}
 
@@ -696,6 +701,20 @@
   \let\endequation\endgather
 %    \end{macrocode}
 %
+% \begin{environment}{definition}
+%    \begin{macrocode}
+  \theoremstyle{plain}
+  \newtheorem{definition}{\@definitionhead}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{definition*}
+%    \begin{macrocode}
+  \theoremstyle{plain}
+  \newtheorem*{definition*}{\@definitionhead}
+%    \end{macrocode}
+% \end{environment}
+%
 % \begin{environment}{lemma}
 %    \begin{macrocode}
   \theoremstyle{plain}
@@ -760,6 +779,26 @@
   
   \theoremstyle{ittitle}% italic heading, regular body text
   \newtheorem*{proofsec*}{}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{case*}
+% Define theoreme style \texttt{indented} that is indented on the left side and has an italic title (similar to the proof environment)
+%    \begin{macrocode}
+  \newtheoremstyle{indented}% name
+    {6pt}% space above
+    {6pt}% space below
+    {\addtolength{\@totalleftmargin}{1em}
+     \addtolength{\linewidth}{-1em}
+     \parshape 1 1em \linewidth}% body font
+    {}% indent amount
+    {\itshape}% head font
+    {:}% punctuation after theorem head
+    { }% space after theorem head, ' ', or \newline
+    {\thmnote{#3}}% theorem head spec (can be left empty, meaning `normal')
+  
+  \theoremstyle{indented}% indeted body, italic heading, regular body text
+  \newtheorem*{case*}{}
 %    \end{macrocode}
 % \end{environment}
 %
@@ -901,7 +940,7 @@
 
 \ifthenelse{\boolean{scrhmwrk@showpagetotal}}{
   \RequirePackage{lastpage}
-  \cfoot{\@scrhmwrkpage \pagemark{} \@scrhmwrkof \pageref{LastPage}}
+  \cfoot{\@scrhmwrkpage{} \pagemark{} \@scrhmwrkof{} \pageref{LastPage}}
 }{
   \cfoot{\pagemark}
 }
@@ -922,7 +961,7 @@
 \newcommand{\subtask}[1]{\subsection*{\centering #1}}
 %    \end{macrocode}
 % \end{macro}
-% 
+%
 % Process class option \texttt{hyperref}. If |hyperref=true| (default) load package \textsf{hyperref}.
 % 
 %    \begin{macrocode}
