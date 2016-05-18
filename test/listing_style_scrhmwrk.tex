@@ -1,0 +1,135 @@
+\documentclass[lang=english, margins=small, listings=true]{scrhmwrk}
+
+\course{ADS – Übungen}
+\tutor[Übungsleiterin]{Malin Rau \& Maren Kaluza}
+%\tutor[]{Malin Rau \& Maren Kaluza}
+% \tutor[Arschgeigen]{Malin Rau \& Maren Kaluza}
+\group[Gr]{3 \& 8}
+\participant{Wolfgang Ramos \& Ole Numssen}
+\series{7}
+\corrector{Christian Pisk}
+
+% \newcommand{\tutor}[2][\expandafter{\@tutortitle}]{
+%   \renewcommand{\@tutortitle}{#1}
+%   \renewcommand{\@tutor}{#2}
+% }
+
+\begin{document}
+
+\lstset{language=Pseudocode}
+
+\task{Aufgabe 7.3}
+
+\paragraph{Voraussetzungen}
+Seien $l_{1}$ und $l_{2}$ Listen mit Zahlen.
+
+\paragraph{Vereinbarung}
+Gemäß der Einführung von Listen in der Vorlesung gehen wird davon aus,
+dass eine Liste aus einer Folge von Knoten (wir nennen diesen Typ
+\texttt{node}) besteht. Jeder \texttt{node} enthält ein Datenelement
+ und einen Zeiger auf den nächsten Knoten der Liste, wobei der Zeiger
+ des letzten Elements der Liste auf das \texttt{null}-Element zeigt. In
+ unserer Implementierung nehmen wir an, dass über die Operationen \texttt{value($\cdot$)} auf
+ dieses Datenelement und über \texttt{next($\cdot$)} auf den Zeiger
+ eines Knoten zugegriffen werden kann. Weiterhin enthält eine Liste
+ gemäß Vorlesung einen Zeiger \emph{head}, der auf den ersten Knoten
+ der Liste zeigt und einen Zeiger \emph{tail}, der auf den letzten
+ Knoten der Liste zeigt. In unserer Implementierung nehmen wir an, dass über die Operationen \texttt{head($\cdot$)} auf
+ \emph{head} und über \texttt{tail($\cdot$)} auf \emph{tail} zugegriffen werden kann.
+
+\paragraph{Idee} Konkateniere $l_{1}$ und $l_{2}$ zu einer Gesamtliste. Wandle diese Gesamtliste
+in ein Feld um. Sortiere dieses Feld mit \texttt{MERGESORT}.
+Erzeuge eine Liste, welche die Wert des Felds \emph{ohne} Duplikate
+enthält. \autoref{lst:setunion} zeigt eine Implementierung dieses
+Algorithmus in Pseudocode.
+
+\paragraph{Anmerkungen zur Implementierung}
+In der aktuellen Form verändert die Implemetierung von
+\texttt{SETUNION} die Eingabelisten (s. Zeile 5
+\autoref{lst:setunion}). Um das zu vermeiden könnte man in Zeile 5 zunächst eine Kopie der Eingabelisten
+\texttt{l1} und \texttt{l2} erstellen (das ist in $\mathcal{O}(n)$
+möglich) und dann auf diesen operieren.
+
+\begin{lstlisting}[style=scrhmwrk, caption={Algorithmus \texttt{SETUNION}}, label=lst:setunion, frame=single, mathescape]
+// compute the union of the elements from two lists
+SETUNION(l1, l2) {
+  
+  // concatenate lists
+  next(tail(l1)) = head(l2);
+
+  // create an array from the elements of the concatenated list
+  integer n = 0;
+  node nod = head(l1);
+
+  // count elements in the concatenated list
+  while nod <> null do
+    n = n + 1;
+    nod = next(nod);
+  od
+
+  erzeuge eindimensinonales Feld F mit n Elementen;
+  
+  // write elements from the concatenated list to F
+  nod = head(l1);
+  integer i = 0;
+  while nod <> null do
+    F[i] = value(nod);
+    nod = next(nod);
+    i = i + 1;
+  od;
+
+  // sort elements in F
+  MERGESORT(F);
+  return NUB(F);
+}
+
+// return a list of unique values from an array
+NUB(A) {
+  integer n = length(A);
+  bool tailset = false; // flag to indicate if tail has been set
+
+  erzeuge Liste l;
+  head(l) = null;
+  tail(l) = null;
+  
+  // concatenate the elements of the array to a list (we assume that this loop is not entered if n-1 < 1, so A has at least two elements)
+  for i = 1 to n-1 do
+    if A[i] > A[i-1] then
+      erzeuge Knoten k;
+      value(k) = A[i];
+
+      // append k to the head of the list
+      next(k) = head(l);
+      head(l) = k;
+      
+      // set tail once
+      if not(tailset) then
+        tail(l) = k;
+        tailset = true;
+      fi
+    fi
+  od
+
+  return l;
+}
+\end{lstlisting}
+
+\paragraph{Laufzeit der Implementierung}
+Sei $n$ die Anzahl der Elemente in \emph{beiden} Listen.
+Das Erzeugen eines Feld von Elementen aus der Liste ist in
+$\mathcal{O}(n)$ möglich, da zunächst die Gesamtzahl der Elemente in der Liste bestimmt wird (das
+liegt in $\mathcal{O}(n)$) und dann jedes Element der Gesamtliste in das Feld
+eingefügt wird (ebefalls in $\mathcal{O}(n)$).
+Die Laufzeit von \texttt{MERGESORT} liegt gemäß Vorlesung in $\mathcal{O}(n \log n)$.
+Die Laufzeit von \texttt{NUB} liegt in $\mathcal{O}(n)$, da jedes
+Element der sortierten Liste einmal mit seinem Vorgänger verglichen
+wird.
+Also liegt die Laufzeit von \texttt{SETUNION} in $\mathcal{O}(n \log
+n)$.
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

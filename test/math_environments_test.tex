@@ -1,0 +1,117 @@
+\documentclass[lang=ngerman, margins=small, extendmath=true]{scrhmwrk}
+
+\course{ADS – Übungen}
+\tutor[Übungsleiterin]{Malin Rau \& Maren Kaluza}
+\group{3 \& 8}
+\participant{Wolfgang Ramos \& Ole Numssen}
+\series{10}
+\corrector{Christian Piske}
+\lemmahead{Lemmhead}
+\preconditionhead{Prehead}
+\assertionhead{Asshead}
+\indbasehead{Basehead}
+\indhyphead{Hyphead}
+\indstephead{Stehead}
+\cfoot{page \pagemark{} de \pageref{LastPage}}
+
+\begin{document}
+
+\task{Aufgabe 8.3}
+
+\begin{lemma}
+  Je suis un lemme.
+\end{lemma}
+
+\begin{precondition*}
+Sei $L: \mathbb{N} \rightarrow \mathbb{N}$ mit  
+\end{precondition*}
+\begin{equation*}
+  L(n) = 
+  \begin{cases}
+  \alpha &\text{falls } n=0\\
+  \alpha + \beta n + \max\{L(m-1) + L(n-m) | m \in \{1,...,n\}\} & \text{sonst}
+  \end{cases}
+\end{equation*}
+eine Funktion, die die worst-case Laufzeit von Quicksort angibt.
+
+\begin{assertion*}
+Es gilt: $\forall n \in \mathbb{N}_{\geq 0}: L(n) \leq \alpha (2n+1) + \frac{\beta}{2} n (n+1)$
+\end{assertion*}
+
+\begin{proof} Im Folgenden verwenden wir $A(n)$ als Abkürzung für 
+\begin{equation*}
+\forall n \in \mathbb{N}_{\geq 0}: L(n) \leq \alpha (2n+1) + \frac{\beta}{2} n (n+1)    
+\end{equation*}
+
+\begin{indbase*} Wir zeigen, dass $A(0)$ gilt.
+\begin{align*}
+& \phantom{{}={}} L(0) & \text{Def. } L \\  & = \alpha & \\
+& = \alpha \cdot (2 \cdot 0 + 1) + \frac{\beta}{2} \cdot 0 \cdot (0+1)& \\
+\end{align*}
+Also gilt insbesondere $L(0) \leq \alpha \cdot (2 \cdot 0 + 1) + \frac{\beta}{2} \cdot 0 \cdot (0+1)$. Also gilt $A(0)$.
+\end{indbase*}
+
+\begin{indhyp*}  
+Sei $n \in \mathbb{N}_{\geq 0}$ so gegeben, dass $\forall m \in \mathbb{N}_{\geq 0}: m \leq n \Rightarrow A(m)$ gilt.
+\end{indhyp*}
+
+\begin{indstep*}
+Bevor wir zeigen, dass $A(n+1)$ gilt, sind zwei Vorüberlegungen zur Größe von $L(m-1)$ und $L(n+1-m)$ für $m \in \{1, ..., n+1\}$ notwendig.
+Wegen $m \leq n+1$ gilt $m-1 \leq (n+1) - 1 = n$. Also gilt wegen der IV:
+\begin{align*}
+& \phantom{{}={}} L(m-1) & \text{IV} \\
+& \leq \alpha (2(m-1)+1) + \frac{\beta}{2} (m-1) (m-1+1) & \\
+& =    \alpha (2m-1) + \frac{\beta}{2} m(m-1) & \tag{i}\\
+\end{align*}
+
+Wegen $m \geq 1$ gilt außerdem $(n+1)-m \leq (n+1) - 1 = n$. Also gilt wegen der IV:
+\begin{align*}
+& \phantom{{}={}} L(n+1-m) & \text{IV} \\
+& \leq \alpha (2(n+1-m)+1) + \frac{\beta}{2} (n+1-m) (n+1-m+1) & \\
+& = \alpha (2n-2m+3) + \frac{\beta}{2} (n-m+1) (n-m+2) & \\
+& = \alpha (2n-2m+3) + \frac{\beta}{2} (n^2 -nm +2n -nm +m^2 -2m +n-m+2) & \\
+& = \alpha (2n-2m+3) + \frac{\beta}{2} (m^2 -2nm -3m +n^2 +3n +2) & \\
+& = \alpha (2n-2m+3) + \frac{\beta}{2} (m(m-2n-3) +n^2 +3n +2) & \tag{ii}\\
+\end{align*}
+
+Also gilt:
+\begin{align*}
+& \phantom{{}={}} \max\{L(m-1) + L(n+1-m) | m \in \{1,...,n+1\}\} & \text{(i) und (ii)}\\
+& \leq \max \{(\alpha (2m-1) + \frac{\beta}{2} m(m-1)) + (\alpha (2n-2m+3) & \\
+& \phantom{{}={}} + \frac{\beta}{2} (m(m-2n-3) +n^2 +3n +2)) | m \in \{1,...,n+1\}\} & \\
+& = \max \{\alpha ((2m-1)+(2n-2m+3)) + \frac{\beta}{2} (m(m-1) & \\ 
+& \phantom{{}={}} + m(m-2n-3) +n^2 +3n +2) | m \in \{1,...,n+1\}\} & \\
+& = \max \{\alpha (2n+2) + \frac{\beta}{2} (m(m-1+m-2n-3) +n^2 +3n +2) & \\ 
+& \phantom{{}={}} | m \in \{1,...,n+1\}\} & \\
+& = \max \{\alpha (2n+2) + \frac{\beta}{2} (m(2m-2n-4) +n^2 +3n +2) & \\
+& \phantom{{}={}} | m \in \{1,...,n+1\}\} & m \leq n+1\\
+& \leq \alpha (2n+2) + \frac{\beta}{2} ((n+1)(2(n+1)-2n-4) +n^2 +3n +2) & \\
+& = \alpha (2n+2) + \frac{\beta}{2} ((n+1)(-2) +n^2 +3n +2) & \\
+& = \alpha (2n+2) + \frac{\beta}{2} (-2n-2 +n^2 +3n +2) & \\
+& = \alpha (2n+2) + \frac{\beta}{2} (n^2 +n) & \\
+& = \alpha (2n+2) + \frac{\beta}{2} n(n+1) & \tag{iii}\\
+\end{align*}
+
+Also gilt:
+\begin{align*}
+& \phantom{{}={}} L(n+1)   & \text{(iii)} \\
+& = \alpha + \beta (n+1) + \max\{L(m-1) + L(n+1-m) | m \in \{1,...,n+1\}\} & \\
+& \leq \alpha + \beta (n+1) + \alpha (2n+2) + \frac{\beta}{2} n(n+1) & \\
+& = \alpha (2n+3) + \frac{\beta}{2} 2(n+1) + \frac{\beta}{2} n(n+1) & \\
+& = \alpha (2n+3) + \frac{\beta}{2} (2(n+1) + n(n+1)) & \\
+& = \alpha (2(n+1)+1) + \frac{\beta}{2} (n+1)(2 + n) & \\
+& = \alpha (2(n+1)+1) + \frac{\beta}{2} (n+1)((n+1)+1) & \\
+\end{align*}
+Also gilt $A(n+1)$.
+\end{indstep*}
+
+Wegen IA und IS gilt die Behauptung.
+
+\end{proof}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
